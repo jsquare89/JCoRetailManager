@@ -9,6 +9,10 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "JRMData", "JRMData\JRMData.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JRMDesktopUI", "JRMDesktopUI\JRMDesktopUI.csproj", "{8CE0AB11-6733-45A3-8E3C-9BCCC161A15A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JRMDataManager.Library", "JRMDataManager.Library\JRMDataManager.Library.csproj", "{EDA3AA74-F9EB-4D9F-A948-4087DEF149A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JRMDesktopUI.Library", "JRMDesktopUI.Library\JRMDesktopUI.Library.csproj", "{4FBC8C54-6588-45A4-9698-2314419D1B9C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +33,14 @@ Global
 		{8CE0AB11-6733-45A3-8E3C-9BCCC161A15A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CE0AB11-6733-45A3-8E3C-9BCCC161A15A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CE0AB11-6733-45A3-8E3C-9BCCC161A15A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDA3AA74-F9EB-4D9F-A948-4087DEF149A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDA3AA74-F9EB-4D9F-A948-4087DEF149A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDA3AA74-F9EB-4D9F-A948-4087DEF149A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDA3AA74-F9EB-4D9F-A948-4087DEF149A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FBC8C54-6588-45A4-9698-2314419D1B9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FBC8C54-6588-45A4-9698-2314419D1B9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FBC8C54-6588-45A4-9698-2314419D1B9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FBC8C54-6588-45A4-9698-2314419D1B9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

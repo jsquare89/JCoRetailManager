@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using JRMDesktopUI.Helpers;
+using JRMDesktopUI.Library.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace JRMDesktopUI.ViewModels
 {
-    class LoginViewModel: Screen
+	class LoginViewModel: Screen
     {
 		private string _userName;
 		private string _password;
@@ -89,6 +89,9 @@ namespace JRMDesktopUI.ViewModels
 			{
 				ErrorMessage = "";
 				var result = await _apiHelper.Authenticate(UserName, Password);
+
+				// Capture more information about the user
+				await _apiHelper.GetLoggedInUserInfo(result.Access_Token);
 			}
 			catch (Exception ex)
 			{
