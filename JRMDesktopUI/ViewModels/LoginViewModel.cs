@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using JRMDesktopUI.EventModels;
 using JRMDesktopUI.Library.Api;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,12 @@ namespace JRMDesktopUI.ViewModels
 		private string _userName;
 		private string _password;
 		private IAPIHelper _apiHelper;
+		IEventAggregator _events;
 
-		public LoginViewModel(IAPIHelper apiHelper)
+		public LoginViewModel(IAPIHelper apiHelper, IEventAggregator events)
 		{
 			_apiHelper = apiHelper;
+			_events = events;
 		}
 
 		public string UserName
@@ -74,7 +77,7 @@ namespace JRMDesktopUI.ViewModels
 			get
 			{
 				bool output = false;
-				// do mor comprehensive check on userName and password
+				// do more comprehensive check on userName and password
 				if (UserName?.Length > 0 && Password?.Length > 0)
 				{
 					output = true;
@@ -92,6 +95,8 @@ namespace JRMDesktopUI.ViewModels
 
 				// Capture more information about the user
 				await _apiHelper.GetLoggedInUserInfo(result.Access_Token);
+
+				_events.PublishOnUIThread(new LogOnEvent());
 			}
 			catch (Exception ex)
 			{
