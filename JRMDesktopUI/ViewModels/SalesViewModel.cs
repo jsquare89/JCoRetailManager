@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using JRMDesktopUI.Library.Api;
+using JRMDesktopUI.Library.Helpers;
 using JRMDesktopUI.Library.Models;
 using System;
 using System.Collections.Generic;
@@ -13,15 +14,17 @@ namespace JRMDesktopUI.ViewModels
     public class SalesViewModel: Screen
     {
 		private IProductEndpoint _productEndpoint;
+		private IConfigHelper _configHelper;
 		private BindingList<ProductModel> _products;
 		private int _itemQuantity = 1;
 		private BindingList<CartItemModel> _cart = new BindingList<CartItemModel>();
 		private ProductModel _selectedProduct;
 
 
-		public SalesViewModel(IProductEndpoint productEndpoint)
+		public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper)
 		{
 			_productEndpoint = productEndpoint;
+			_configHelper = configHelper;
 		}
 
 		protected override async void OnViewLoaded(object view)
@@ -80,32 +83,54 @@ namespace JRMDesktopUI.ViewModels
 
 		public string SubTotal
 		{
-			get 
+			get
 			{
-				decimal subtotal = 0;
-				foreach( var item in Cart)
-				{
-					subtotal += (item.Product.RetailPrice * item.QuantityInCart);
-				}
-				return subtotal.ToString("C");
+				return CalculateSubTotal().ToString("C");
 			}
+		}
+
+		private decimal CalculateSubTotal()
+		{
+			decimal subtotal = 0;
+			foreach (var item in Cart)
+			{
+				subtotal += (item.Product.RetailPrice * item.QuantityInCart);
+			}
+
+			return subtotal;
 		}
 
 		public string Tax
 		{
+
 			get
 			{
-				// replace with calculation
-				return "$0.00";
+				return CalculateTax().ToString("C");
 			}
+		}
+
+		private decimal CalculateTax()
+		{
+			decimal TaxAmount = 0;
+			decimal taxRate = _configHelper.GetTaxRate()/100;
+
+			foreach (var item in Cart)
+			{
+				if (item.Product.IsTaxable)
+				{
+					TaxAmount += (item.Product.RetailPrice * item.QuantityInCart * taxRate);
+				}
+			}
+
+			return TaxAmount;
 		}
 
 		public string Total
 		{
 			get
 			{
-				// replace with calculation
-				return "$0.00";
+				decimal total = CalculateSubTotal() + CalculateTax();
+				return total.ToString("C");
 			}
 		}
 
@@ -175,6 +200,8 @@ namespace JRMDesktopUI.ViewModels
 			SelectedProduct.QuantityInStock -= ItemQuantity;
 			ItemQuantity = 1;
 			NotifyOfPropertyChange(() => SubTotal);
+			NotifyOfPropertyChange(() => Tax);
+			NotifyOfPropertyChange(() => Total);
 			NotifyOfPropertyChange(() => Cart);
 		}
 
@@ -182,6 +209,8 @@ namespace JRMDesktopUI.ViewModels
 		{
 
 			NotifyOfPropertyChange(() => SubTotal);
+			NotifyOfPropertyChange(() => Tax);
+			NotifyOfPropertyChange(() => Total);
 		}
 
 		public void CheckOut()
