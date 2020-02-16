@@ -14,16 +14,19 @@ namespace JRMDesktopUI.ViewModels
     public class SalesViewModel: Screen
     {
 		private IProductEndpoint _productEndpoint;
+		private ISaleEndpoint _saleEndpoint;
 		private IConfigHelper _configHelper;
+		
 		private BindingList<ProductModel> _products;
 		private int _itemQuantity = 1;
 		private BindingList<CartItemModel> _cart = new BindingList<CartItemModel>();
 		private ProductModel _selectedProduct;
 
 
-		public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper)
+		public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper, ISaleEndpoint saleEndpoint)
 		{
 			_productEndpoint = productEndpoint;
+			_saleEndpoint = saleEndpoint;
 			_configHelper = configHelper;
 		}
 
@@ -158,19 +161,6 @@ namespace JRMDesktopUI.ViewModels
 			}
 		}
 
-		public bool CanCheckOut
-		{
-			get
-			{
-				bool output = false;
-
-				//Make sure something is in the cart
-
-				return output;
-
-			}
-		}
-
 		public void AddToCart()
 		{
 			CartItemModel existingItem = Cart.FirstOrDefault(x => x.Product == SelectedProduct);
@@ -199,6 +189,7 @@ namespace JRMDesktopUI.ViewModels
 			NotifyOfPropertyChange(() => Tax);
 			NotifyOfPropertyChange(() => Total);
 			NotifyOfPropertyChange(() => Cart);
+			NotifyOfPropertyChange(() => CanCheckOut);
 		}
 
 		public void RemoveFromCart()
@@ -207,11 +198,38 @@ namespace JRMDesktopUI.ViewModels
 			NotifyOfPropertyChange(() => SubTotal);
 			NotifyOfPropertyChange(() => Tax);
 			NotifyOfPropertyChange(() => Total);
+			NotifyOfPropertyChange(() => CanCheckOut);
 		}
 
-		public void CheckOut()
+		public bool CanCheckOut
 		{
+			get
+			{
+				bool output = false;
 
+				if (Cart.Count > 0)
+				{
+					output = true;
+				}
+
+				return output;
+
+			}
+		}
+		public async Task CheckOut()
+		{
+			SaleModel sale = new SaleModel();
+			
+			foreach (var item in Cart)
+			{
+				sale.SaleDetails.Add(new SaleDetailModel
+				{
+					ProductId = item.Product.Id,
+					Quantity = item.QuantityInCart
+				});
+			}
+
+			await _saleEndpoint.PostSale(sale);
 		}
 
 	}
