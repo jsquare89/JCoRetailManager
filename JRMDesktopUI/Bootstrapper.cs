@@ -1,8 +1,10 @@
-﻿using Caliburn.Micro;
+﻿using AutoMapper;
+using Caliburn.Micro;
 using JRMDesktopUI.Helpers;
 using JRMDesktopUI.Library.Api;
 using JRMDesktopUI.Library.Helpers;
 using JRMDesktopUI.Library.Models;
+using JRMDesktopUI.Models;
 using JRMDesktopUI.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -28,8 +30,23 @@ namespace JRMDesktopUI
             "PasswordChanged");
         }
 
+        private IMapper ConfigureAutomapper()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<ProductModel, ProductDisplayModel>();
+                cfg.CreateMap<CartItemModel, CartItemDisplayModel>();
+            });
+
+            var output = config.CreateMapper();
+
+            return output;
+        }
+
         protected override void Configure()
         {
+            _container.Instance(ConfigureAutomapper());
+
             _container.Instance(_container)
                 .PerRequest<IProductEndpoint, ProductEndpoint>()
                 .PerRequest<ISaleEndpoint, SaleEndpoint>();
