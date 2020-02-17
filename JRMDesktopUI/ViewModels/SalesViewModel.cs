@@ -48,6 +48,18 @@ namespace JRMDesktopUI.ViewModels
 			Products = new BindingList<ProductDisplayModel>(products);
 		}
 
+		private async Task ResetSalesViewModel()
+		{
+			Cart = new BindingList<CartItemDisplayModel>();
+			// TODO - Add clearing the selectedCartItem if it does not do it itself
+			await LoadProducts();
+
+			NotifyOfPropertyChange(() => SubTotal);
+			NotifyOfPropertyChange(() => Tax);
+			NotifyOfPropertyChange(() => Total);
+			NotifyOfPropertyChange(() => CanCheckOut);
+		}
+
 		public BindingList<ProductDisplayModel> Products
 		{
 			get { return _products; }
@@ -199,7 +211,7 @@ namespace JRMDesktopUI.ViewModels
 			{
 				bool output = false;
 
-				if (SelectedCartItem != null && SelectedCartItem?.Product.QuantityInStock > 0)
+				if (SelectedCartItem != null && SelectedCartItem?.QuantityInCart > 0)
 				{
 					output = true;
 				}
@@ -225,6 +237,7 @@ namespace JRMDesktopUI.ViewModels
 			NotifyOfPropertyChange(() => Tax);
 			NotifyOfPropertyChange(() => Total);
 			NotifyOfPropertyChange(() => CanCheckOut);
+			NotifyOfPropertyChange(() => CanAddToCart);
 		}
 
 		public bool CanCheckOut
@@ -256,6 +269,8 @@ namespace JRMDesktopUI.ViewModels
 			}
 
 			await _saleEndpoint.PostSale(sale);
+
+			await ResetSalesViewModel();
 		}
 
 	}
