@@ -19,6 +19,5 @@ namespace JRMDataManager.Controllers
             UserData data = new UserData();
             return data.GetUserById(userId).First();
         }
-
     }
 }
