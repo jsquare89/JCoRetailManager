@@ -54,10 +54,6 @@ namespace JRMDataManager.Library.DataAccess
             };
             sale.Total = sale.SubTotal + sale.Tax;
 
-
-            
-
-
             using (SqlDataAccess sql = new SqlDataAccess())
             {
                 try
@@ -87,6 +83,15 @@ namespace JRMDataManager.Library.DataAccess
                 }
             };
 
+        }
+
+        public List<SaleReportModel> GetSaleReport()
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var output = sql.LoadData<SaleReportModel, dynamic>("dbo.spSale_SaleReport", new { }, "JRMData");
+
+            return output;
+        }
     }
-}
 }
