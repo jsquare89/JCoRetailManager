@@ -52,7 +52,7 @@ namespace JRMDataManager.Library.Internal.DataAccess
 
             _transaction = _connection.BeginTransaction();
 
-            isClosed = false;
+            _isClosed = false;
         }
 
         public List<T> LoadDataInTransaction<T, U>(string storedProcedure, U parameters)
@@ -71,24 +71,24 @@ namespace JRMDataManager.Library.Internal.DataAccess
                 transaction: _transaction);
         }
 
-        private bool isClosed = false;
+        private bool _isClosed = false;
         public void CommitTransaction()
         {
             _transaction?.Commit();
             _connection?.Close();
-            isClosed = true;
+            _isClosed = true;
         }
 
         public void RollbackTransaction()
         {
             _transaction?.Rollback();
             _connection?.Close();
-            isClosed = true;
+            _isClosed = true;
         }
 
         public void Dispose()
         {
-            if (isClosed == false)
+            if (_isClosed == false)
             {
                 try
                 {
