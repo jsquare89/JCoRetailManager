@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,9 +13,18 @@ namespace JRMDataManager.Library.Internal.DataAccess
 {
     internal class SqlDataAccess : IDisposable
     {
+        private IDbConnection _connection;
+        private IDbTransaction _transaction;
+        private bool _isClosed = false;
+        private readonly IConfiguration _config;
+
+        public SqlDataAccess(IConfiguration config)
+        {
+            _config = config;
+        }
         public string GetConnectionString(string name)
         {
-            return ConfigurationManager.ConnectionStrings[name].ConnectionString;
+            return _config.GetConnectionString(name);
         }
 
         public List<T> LoadData<T, U>(string storedProcedure, U parameters, string connectionStringName)
@@ -40,8 +50,6 @@ namespace JRMDataManager.Library.Internal.DataAccess
             }
         }
 
-        private IDbConnection _connection;
-        private IDbTransaction _transaction;
 
         public void StartTransaction(string connectionStringName)
         {
@@ -71,7 +79,8 @@ namespace JRMDataManager.Library.Internal.DataAccess
                 transaction: _transaction);
         }
 
-        private bool _isClosed = false;
+        
+
         public void CommitTransaction()
         {
             _transaction?.Commit();
