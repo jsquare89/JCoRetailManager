@@ -25,6 +25,7 @@ namespace JRMApi.Controllers
         }
 
         [Authorize(Roles = "Cashier")]
+        [HttpPost]
         public void Post(SaleModel sale)
         {
             SaleData data = new SaleData(_config);
@@ -34,6 +35,7 @@ namespace JRMApi.Controllers
         }
 
         [Authorize(Roles = "Admin, Manager")]
+        [HttpGet]
         [Route("GetSalesReport")]
         public List<SaleReportModel> GetSalesReport()
         {

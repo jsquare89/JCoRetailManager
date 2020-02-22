@@ -12,7 +12,7 @@ namespace JRMDesktopUI.ViewModels
 	class LoginViewModel: Screen
     {
 		private string _userName = "jarredjardine@hotmail.com";
-		private string _password = "Jj1234";
+		private string _password = "Jj1234!";
 		private IAPIHelper _apiHelper;
 		IEventAggregator _events;
 
