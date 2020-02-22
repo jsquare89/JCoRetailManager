@@ -12,7 +12,7 @@ namespace JRMDataManager.Library
         // TODO: Move this from config to the API
         public static decimal GetTaxRate()
         {
-            string rateText = ConfigurationManager.AppSettings["taxRate"];
+            string rateText = "8.75" ; //ConfigurationManager.AppSettings["taxRate"];
 
             bool isValidTaxRate = Decimal.TryParse(rateText, out decimal output);
 

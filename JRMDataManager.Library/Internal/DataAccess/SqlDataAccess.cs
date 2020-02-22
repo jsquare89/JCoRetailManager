@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace JRMDataManager.Library.Internal.DataAccess
 {
-    internal class SqlDataAccess : IDisposable
+    public class SqlDataAccess : IDisposable, ISqlDataAccess
     {
         private IDbConnection _connection;
         private IDbTransaction _transaction;
@@ -79,7 +79,7 @@ namespace JRMDataManager.Library.Internal.DataAccess
                 transaction: _transaction);
         }
 
-        
+
 
         public void CommitTransaction()
         {
