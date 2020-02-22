@@ -19,7 +19,6 @@ namespace JRMDataManager.Library
             if (isValidTaxRate == false)
             {
                 throw new ConfigurationErrorsException("The tax rate is not set up properly");
-
             }
 
             return output;
