@@ -24,7 +24,7 @@ namespace JRMDataManager.Library.DataAccess
 
             List<SaleDetailDBModel> details = new List<SaleDetailDBModel>();
             ProductData products = new ProductData(_config);
-            var taxRate = ConfigHelper.GetTaxRate() / 100;
+            var taxRate = decimal.Parse(_config["taxRate"]) / 100;
 
             foreach (var item in saleInfo.SaleDetails)
             {
