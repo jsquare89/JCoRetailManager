@@ -11,3 +11,4 @@ Dapper
 Caliburn Micro
 Dependency Injection
 Migrating .Net Framework to .NetCore
+
